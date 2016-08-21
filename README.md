@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # MQTT Humidity Monitor Application
 
 
