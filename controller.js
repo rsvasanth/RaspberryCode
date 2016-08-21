@@ -1,61 +1,49 @@
 // controller.js
 const mqtt = require('mqtt')
-const client = mqtt.connect('mqtt://broker.hivemq.com')
+const client = mqtt.connect('mqtt://localhost')
 
-var garageState = ''
+var humonState = ''
 var connected = false
 
 client.on('connect', () => {
-  client.subscribe('garage/connected')
-  client.subscribe('garage/state')
+  client.subscribe('humon/connected')
+  client.subscribe('humon/state')
 })
 
 client.on('message', (topic, message) => {
   switch (topic) {
-    case 'garage/connected':
-      return handleGarageConnected(message)
-    case 'garage/state':
-      return handleGarageState(message)
+    case 'humon/connected':
+      return handleHumonConnected(message)
+    case 'humon/state':
+      return handleHumonState(message)
   }
   console.log('No handler for topic %s', topic)
 })
 
-function handleGarageConnected (message) {
-  console.log('garage connected status %s', message)
+function handleHumonConnected (message) {
+  console.log('humon connected status %s', message)
   connected = (message.toString() === 'true')
 }
 
-function handleGarageState (message) {
-  garageState = message
-  console.log('garage state update to %s', message)
+function handleHumonState (message) {
+  humonState = message
+  console.log('humon state update to %s', message)
 }
 
-function openGarageDoor () {
+function switchOnHumon () {
   // can only open door if we're connected to mqtt and door isn't already open
-  if (connected && garageState !== 'open') {
+  if (connected && humonState !== 'on') {
     // Ask the door to open
-    client.publish('garage/open', 'true')
+    client.publish('humon/on', 'true')
   }
 }
 
-function closeGarageDoor () {
-  // can only close door if we're connected to mqtt and door isn't already closed
-  if (connected && garageState !== 'closed') {
-    // Ask the door to close
-    client.publish('garage/close', 'true')
+function switchOffHumon () {
+  // can only switchoff if we're connected to mqtt and humon isn't already off
+  if (connected && humonState !== 'off') {
+    // Ask the humon to switchoff
+    client.publish('humon/off', 'true')
   }
 }
 
-// --- For Demo Purposes Only ----//
 
-// simulate opening garage door
-setTimeout(() => {
-  console.log('open door')
-  openGarageDoor()
-}, 5000)
-
-// simulate closing garage door
-setTimeout(() => {
-  console.log('close door')
-  closeGarageDoor()
-}, 20000)
