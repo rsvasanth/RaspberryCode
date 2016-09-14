@@ -31,9 +31,9 @@ function handleHumonState (message) {
 }
 
 function switchOnHumon () {
-  // can only open door if we're connected to mqtt and door isn't already open
+  // can only switch on humon  if we're connected to mqtt and humon isn't already switch on
   if (connected && humonState !== 'on') {
-    // Ask the door to open
+    // Ask the humon to switch on
     client.publish('humon/on', 'true')
   }
 }
