@@ -12,7 +12,7 @@ client.on('connect', () => {
   client.subscribe('humon/on')
   client.subscribe('humon/off')
 
-  // Inform controllers that garage is connected
+  // Inform controllers that humon is connected
   client.publish('humon/connected', 'true')
   sendStateUpdate()
 })
