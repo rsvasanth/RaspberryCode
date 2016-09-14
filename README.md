@@ -10,7 +10,12 @@ For optimal testing make sure that the controller is started first and then imme
 ```
 npm install
 ```
-
+```
+node controller.js
+```
+```
+node humon.js
+```
 
 =======
 # RaspberryCode
